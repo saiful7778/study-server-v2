@@ -25,7 +25,7 @@ const dbUrl = getEnvVar("DB_CONNECT");
 app.use(express.json());
 app.use(
   cors({
-    origin: ["http://localhost:5173"],
+    origin: [getEnvVar("FORNTEND_URL"), "http://localhost:5173"],
     methods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
   })
 );
