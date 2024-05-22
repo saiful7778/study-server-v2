@@ -4,6 +4,7 @@ import serverHelper from "../utils/server-helper.js";
 import inputCheck from "../utils/input-check.js";
 import { userModel } from "../models/userModel.js";
 import getEnvVar from "../utils/env-var.js";
+import devDebug from "../utils/dev-debug.js";
 
 const route = Router();
 
@@ -53,6 +54,7 @@ route.post("/sign_in", (req, res) => {
       getEnvVar("ACCESS_TOKEN"),
       { expiresIn: "1h" }
     );
+    devDebug("user sign in");
     res.status(200).send({ success: true, token, userData });
   }, res);
 });
