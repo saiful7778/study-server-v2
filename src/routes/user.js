@@ -12,7 +12,7 @@ const routeAll = Router();
 
 // user create route
 route.post("/", (req, res) => {
-  const { userName, userEmail, userToken } = req.body;
+  const { userName, userEmail, userPhoto, userToken } = req.body;
 
   const check = inputCheck([userName, userEmail, userToken], res);
   if (!check) {
@@ -28,8 +28,33 @@ route.post("/", (req, res) => {
       return;
     }
 
-    await userModel.create({ userName, userEmail, userToken });
+    await userModel.create({ userName, userEmail, userToken, userPhoto });
     devDebug("new user created");
+    res.status(201).send({
+      success: true,
+      message: "User is created",
+    });
+  }, res);
+});
+
+// OAuth user create route
+route.post("/oauth", (req, res) => {
+  const { userName, userEmail, userPhoto, userToken } = req.body;
+
+  const check = inputCheck([userName, userEmail, userToken], res);
+  if (!check) {
+    return;
+  }
+  serverHelper(async () => {
+    const existUser = await userModel.findOne({ userEmail }, { _id: 1 });
+    if (existUser) {
+      res.status(200).send({ success: true, message: "user is already exist" });
+      devDebug("user is already exist in oauth");
+      return;
+    }
+
+    await userModel.create({ userName, userEmail, userToken, userPhoto });
+    devDebug("new user created is oauth");
     res.status(201).send({
       success: true,
       message: "User is created",
