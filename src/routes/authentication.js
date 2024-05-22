@@ -8,7 +8,7 @@ import getEnvVar from "../utils/env-var.js";
 const route = Router();
 
 // login route
-route.post("/login", (req, res) => {
+route.post("/sign_in", (req, res) => {
   const userData = req.body;
   const { userEmail } = userData;
 

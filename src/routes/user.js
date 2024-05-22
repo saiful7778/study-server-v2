@@ -12,9 +12,9 @@ const routeAll = Router();
 
 // user create route
 route.post("/", (req, res) => {
-  const { userName, userEmail, userPhoto, userToken } = req.body;
+  const { userName, userEmail, userToken } = req.body;
 
-  const check = inputCheck([userName, userEmail, userPhoto, userToken], res);
+  const check = inputCheck([userName, userEmail, userToken], res);
   if (!check) {
     return;
   }
@@ -28,7 +28,7 @@ route.post("/", (req, res) => {
       return;
     }
 
-    await userModel.create({ userName, userEmail, userPhoto, userToken });
+    await userModel.create({ userName, userEmail, userToken });
     devDebug("new user created");
     res.status(201).send({
       success: true,
