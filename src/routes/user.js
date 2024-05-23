@@ -87,6 +87,33 @@ route.get("/:userId", verifyToken, verifyTokenAndKey, (req, res) => {
   }, res);
 });
 
+route.patch("/:userId", verifyToken, verifyTokenAndKey, (req, res) => {
+  const userId = req.params.userId;
+  const reqData = req.body;
+  serverHelper(async () => {
+    const existUser = await userModel.findById(userId, {
+      __v: 0,
+      createdAt: 0,
+      updatedAt: 0,
+    });
+
+    if (!existUser) {
+      res.status(404).send({
+        success: false,
+        message: "User not exist",
+      });
+      return;
+    }
+
+    const data = await userModel.updateOne({ _id: userId }, reqData);
+
+    res.status(200).send({
+      success: true,
+      data,
+    });
+  }, res);
+});
+
 // get all user data (admin)
 routeAll.get("/", verifyToken, verifyTokenAndKey, verifyAdmin, (req, res) => {
   serverHelper(async () => {
